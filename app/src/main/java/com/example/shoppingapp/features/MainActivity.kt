@@ -1,5 +1,6 @@
 package com.example.shoppingapp.features
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.endpoint.ApiService
+import com.example.shoppingapp.features.subcategory.SubCategoryActivity
 import com.example.shoppingapp.model.ChildDataItemModel
 import com.example.shoppingapp.model.DataDBModel
 import com.example.shoppingapp.model.DataModel
@@ -77,7 +79,13 @@ class MainActivity : AppCompatActivity() {
                                         expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<DataDBModel.Category>)[groupPosition].name, Toast.LENGTH_SHORT).show() }
 
                                         expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-                                            Toast.makeText(applicationContext, "Clicked: " + (titleList as ArrayList<DataDBModel.Category>)[groupPosition].name + " -> " + listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).name, Toast.LENGTH_SHORT).show()
+
+                                            val intent = Intent(this, SubCategoryActivity::class.java)
+                                            // To pass any data to next activity
+                                            intent.putExtra("keyIdentifier", listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).childCategories)
+                                            // start your next activity
+                                            startActivity(intent)
+
                                             false
                                         }
                                     }
@@ -92,9 +100,6 @@ class MainActivity : AppCompatActivity() {
 
             })
         })
-
-
-
     }
 
 }

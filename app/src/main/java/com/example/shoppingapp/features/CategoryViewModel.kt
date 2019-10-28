@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.shoppingapp.RoomViewModelKotlinSampleApplication
 import com.example.shoppingapp.model.DataDBModel
 import com.example.shoppingapp.model.DataModel
+import com.example.shoppingapp.model.ProductDBModel
 import com.example.shoppingapp.repository.DataRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -32,6 +33,16 @@ class CategoryViewModel(): ViewModel(), CoroutineScope {
     fun getChildDataFromDB(categoryIdList:List<Int>):LiveData<List<DataDBModel.Category>>{
         val mShoppingDao= RoomViewModelKotlinSampleApplication.database!!.shoppingDao()
         return mShoppingDao.getMultipleCategory(categoryIdList)
+    }
+
+    fun getSingleCatProductFromDB(productId:Int):LiveData<List<ProductDBModel.Product>>{
+        val mShoppingDao = RoomViewModelKotlinSampleApplication.database!!.productDao()
+        return mShoppingDao.getSingleCatProduct(productId)
+    }
+
+    fun getMultipleCatProductFromDB(productIdList:List<Int>):LiveData<List<ProductDBModel.Product>>{
+        val mShoppingDao = RoomViewModelKotlinSampleApplication.database!!.productDao()
+        return mShoppingDao.getMultipleCatProduct(productIdList)
     }
 
     //Placing data in DB using coroutines
