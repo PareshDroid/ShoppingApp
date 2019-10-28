@@ -1,27 +1,22 @@
-package com.example.shoppingapp.features
+package com.example.shoppingapp.features.mainpage
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
-import com.example.shoppingapp.endpoint.ApiService
+import com.example.shoppingapp.features.BaseActivity
 import com.example.shoppingapp.features.subcategory.SubCategoryActivity
-import com.example.shoppingapp.model.ChildDataItemModel
 import com.example.shoppingapp.model.DataDBModel
 import com.example.shoppingapp.model.DataModel
 import com.example.shoppingapp.model.ParentDataItemModel
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var categoryModel: CategoryViewModel
 
@@ -38,8 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         categoryModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
+        val dialog = setProgressDialog(this, "Loading..")
+        dialog.show()
+
         //absorb all the data from view model
         categoryModel.getAllCategories().observe(this,Observer<DataModel.Result>{ categoryData ->
+
 
             //put all the data in database
             categoryModel.putAllDataInDatabase(categoryData).observe(this,Observer<Boolean>{ status ->
@@ -69,9 +68,16 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("parent child",parentChildList.size.toString())
                                 if(expandableList.size==parentChildList.size){
                                     if (mExpandableListView != null) {
+
+                                        dialog.dismiss()
+
                                         val listData = expandableList
                                         titleList = ArrayList(listData.keys)
-                                        adapter = CustomExpandableListAdapter(this, titleList as ArrayList<DataDBModel.Category>, listData)
+                                        adapter = CustomExpandableListAdapter(
+                                            this,
+                                            titleList as ArrayList<DataDBModel.Category>,
+                                            listData
+                                        )
                                         expandableListView!!.setAdapter(adapter)
 
                                         expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<DataDBModel.Category>)[groupPosition].name, Toast.LENGTH_SHORT).show() }

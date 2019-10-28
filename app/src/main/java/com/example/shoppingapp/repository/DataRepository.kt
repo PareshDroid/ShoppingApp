@@ -28,7 +28,10 @@ class DataRepository {
         return GlobalScope.async(Dispatchers.IO) {
 
             val catList = shoppingData.categories
+            deleteAllDataInDB()
+
             val shoppingDao = RoomViewModelKotlinSampleApplication.database!!.shoppingDao()
+
             for(category in catList){ // getting single category from list and placing in db
                 val categoryModel = DataDBModel.Category()
                 categoryModel.category_id = category.category_id
@@ -36,6 +39,7 @@ class DataRepository {
                 if(!category.child_categories.isNullOrEmpty()){
                     categoryModel.childCategories = category.child_categories.toString()
                 }
+
                 shoppingDao.insertCategory(categoryModel) // placing single category in Database
 
 
@@ -69,6 +73,15 @@ class DataRepository {
             status
         }.await()
 
+    }
+
+    fun deleteAllDataInDB(){
+        val shoppingDao = RoomViewModelKotlinSampleApplication.database!!.shoppingDao()
+        shoppingDao.deleteAllCategories()//deleting old categories stored in DB
+        val productDao= RoomViewModelKotlinSampleApplication.database!!.productDao()
+        productDao.deleteAllProducts()// deleteing old products stored in DB
+        val variantDao= RoomViewModelKotlinSampleApplication.database!!.variantDao()
+        variantDao.deleteAllVariants()//deleting old variants from DB
     }
 
     //make network call and get all the data. RxJava is used to get data from network.

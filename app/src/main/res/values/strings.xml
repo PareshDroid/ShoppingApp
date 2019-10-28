@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ShoppingApp</string>
+    <string name="tax_name">TAX:: </string>
+    <string name="tax_value">TAX VALUE:: </string>
+    <string name="product_name">PRODUCT:: </string>
+    <string name="color">COLOR:: </string>
+    <string name="size">SIZE:: </string>
 </resources>

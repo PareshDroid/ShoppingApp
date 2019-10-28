@@ -1,4 +1,4 @@
-package com.example.shoppingapp.features
+package com.example.shoppingapp.features.mainpage
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

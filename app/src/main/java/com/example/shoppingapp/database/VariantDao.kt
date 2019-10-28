@@ -1,5 +1,6 @@
 package com.example.shoppingapp.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.shoppingapp.model.VariantDBModel
 
@@ -16,5 +17,8 @@ interface VariantDao {
     fun deleteVariant(category: VariantDBModel.Variant)
 
     @Query("SELECT * FROM Variant WHERE var_product_id=:varProductID")
-    fun findVariant(varProductID: Int): List<VariantDBModel.Variant>
+    fun getProductVariant(varProductID: Int): LiveData<List<VariantDBModel.Variant>>
+
+    @Query("DELETE FROM Variant")
+    fun deleteAllVariants()
 }

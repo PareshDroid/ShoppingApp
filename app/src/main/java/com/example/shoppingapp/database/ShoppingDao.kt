@@ -21,4 +21,7 @@ interface ShoppingDao {
 
     @Query("SELECT * FROM Category WHERE category_id IN(:catIDs)")
     fun getMultipleCategory(catIDs: List<Int>): LiveData<List<DataDBModel.Category>>
+
+    @Query("DELETE FROM Category")
+    fun deleteAllCategories()
 }

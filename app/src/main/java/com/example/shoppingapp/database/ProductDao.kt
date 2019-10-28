@@ -21,4 +21,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM Product WHERE cat_id IN(:catIDs)")
     fun getMultipleCatProduct(catIDs: List<Int>): LiveData<List<ProductDBModel.Product>>
+
+    @Query("DELETE FROM Product")
+    fun deleteAllProducts()
 }

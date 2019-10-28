@@ -1,7 +1,7 @@
 package com.example.shoppingapp.features.subcategory
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ExpandableListAdapter
 import android.widget.ExpandableListView
 import android.widget.Toast
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.shoppingapp.R
-import com.example.shoppingapp.features.CategoryViewModel
+import com.example.shoppingapp.features.productdetail.ProductDetailActivity
 import com.example.shoppingapp.model.DataDBModel
 import com.example.shoppingapp.model.ProductDBModel
 
@@ -26,7 +26,7 @@ class SubCategoryActivity: AppCompatActivity() {
 
         msubCat_ExpandableListView = findViewById(R.id.subcategory_expandableListView)
 
-        var extraData = intent.getStringExtra("keyIdentifier")
+        val extraData = intent.getStringExtra("keyIdentifier")
 
         val catList=extraData.substring(1,extraData.length-1).replace("\\s".toRegex(),"").split(",")
 
@@ -60,7 +60,12 @@ class SubCategoryActivity: AppCompatActivity() {
 
                             msubCat_ExpandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
 
-
+                                val intent = Intent(this, ProductDetailActivity::class.java)
+                                intent.putExtra("KEY_TAX_NAME", listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).tax_name)
+                                intent.putExtra("KEY_TAX_VALUE", listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).tax_value)
+                                intent.putExtra("KEY_PRODUCT_ID", listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).product_id)
+                                intent.putExtra("KEY_PRODUCT_NAME", listData[(titleList as ArrayList<DataDBModel.Category>)[groupPosition]]!!.get(childPosition).product_name)
+                                startActivity(intent)
                                 false
                             }
                         }
